@@ -2,10 +2,6 @@
 #include<stdlib.h>
 #include<proto.h>
 
-#define IMAGE_SIZE 0x1D000
-#define SLOT_0 0x50000000
-#define SLOT_1 0x22000000
-
 static config_t boot_conf;
 static int32_t choice;
 
@@ -14,6 +10,12 @@ const char new_image[IMAGE_SIZE];
 const uint32_t new_fw_version = 0x1234;
 
 
+/**
+ * @brief writes the image data into image slot.
+ * @param[in] slot no 0 or 1
+ * @retval  0  succuess.
+ * @retval  -1  error.
+ */
 int32_t flash_new_image(int32_t slot){
 
     int32_t retval=-1;
@@ -31,16 +33,11 @@ int32_t flash_new_image(int32_t slot){
     }
 }
 
+
 int main(void){
 
     printf("\n***Starting Bootloader host Application***\n");
     proto_init();
-    proto_get_cfg(&boot_conf);
-    proto_set_cfg(&boot_conf);
-    proto_erase_mem(1,2);
-    proto_read_mem(NULL, 1, 2);
-    proto_go(0x123456);
-
     printf("\n*** BOOT HOST MENU***\n");
     printf("1 : Print Boot Configuration \n");
     printf("2 : Update Target\n");
@@ -99,6 +96,13 @@ int main(void){
             } 
             else {
                 printf("No updates require..\n");
+                // boot from the last active image
+                if(boot_conf.active_image == 0){
+                  proto_go(SLOT_0);
+                } 
+                else if (boot_conf.active_image == 1){
+                  proto_go(SLOT_1);
+                }
             }
           }break;
 

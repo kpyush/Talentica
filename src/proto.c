@@ -20,13 +20,21 @@ uint32_t proto_init(void){
     tansport_init();
 }
 
+/**
+ * @brief resets the tar protocol buffers and underlying hardware.
+ * @param[in] none
+ *
+ * @retval  0  succuess.
+ * @retval  1  error.
+ */
 
 void proto_reset_traget(void){
     LOG("%s\n",__FUNCTION__);
 }
+
 /**
- * @brief initializes protocol buffers and underlying hardware.
- * @param[in] none
+ * @brief reads configuration data from the boot_conf .
+ * @param[in] config_t * : pointer to config_t structure
  *
  * @retval  0  succuess.
  * @retval  1  error.
@@ -48,6 +56,14 @@ uint32_t proto_get_cfg(config_t *cfg){
     return 0;
 }
 
+/**
+ * @brief writes configuration data from the boot_conf .
+ * @param[in] config_t * : pointer to config_t structure
+ *
+ * @retval  0  succuess.
+ * @retval  1  error.
+ */
+
 uint32_t proto_set_cfg(config_t *cfg){
     LOG("%s\n",__FUNCTION__);
     transport_write(NULL,0x1234);
@@ -55,12 +71,29 @@ uint32_t proto_set_cfg(config_t *cfg){
     return 0;
 }
 
+/**
+ * @brief erases memory from the given address .
+ * @param[in] add : address of the memory to be erased.
+ * @param[in] len : lenght to be erased from the address
+ *
+ * @retval  0  succuess.
+ * @retval  1  error.
+ */
+
 uint32_t proto_erase_mem(uint32_t add, uint32_t len){
     LOG("%s\n",__FUNCTION__);
     transport_write(NULL,0x1234);
     return 0;
 }
 
+/**
+ * @brief reads memory from the given address .
+ * @param[in] add : address of the memory to be read.
+ * @param[in] len : lenght to be read 
+ *
+ * @retval  0  succuess.
+ * @retval  1  error.
+ */
 uint32_t proto_read_mem(char *buff, uint32_t add, uint32_t len){
     LOG("%s\n",__FUNCTION__);
     transport_write(NULL,0x1234);
@@ -68,13 +101,29 @@ uint32_t proto_read_mem(char *buff, uint32_t add, uint32_t len){
     return 0;
 }
 
+/**
+ * @brief Writes memory from the given address .
+ * @param[in] add : address of the memory to be write.
+ * @param[in] len : lenght to be written 
+ *
+ * @retval  0  succuess.
+ * @retval  1  error.
+ */
 uint32_t proto_write_mem(const char *buff, uint32_t add, uint32_t len){
     LOG("%s\n",__FUNCTION__);
     transport_write(NULL,0x1234);
     transport_read(NULL,0x1234);
     return 0;
 }
+
+/*
+ * @brief loads the image from the specific address and executes
+ * @param[in] add : address of the memory from which the image will be loaded.
+ *
+ * @retval none
+ */
 void proto_go(uint32_t add){
     LOG("%s\n",__FUNCTION__);
+    LOG("booting from address:%0x\n",add);
     transport_write(NULL,0x1234);
 }
