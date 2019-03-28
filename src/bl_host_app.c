@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include<bl_host_conf.h>
 #include<proto.h>
 
 static config_t boot_conf;
