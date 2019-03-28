@@ -2,8 +2,34 @@
 #include<stdlib.h>
 #include<proto.h>
 
+#define IMAGE_SIZE 0x1D000
+#define SLOT_0 0x50000000
+#define SLOT_1 0x22000000
+
 static config_t boot_conf;
 static int32_t choice;
+
+//new firmware image data
+const char new_image[IMAGE_SIZE];
+const uint32_t new_fw_version = 0x1234;
+
+
+int32_t flash_new_image(int32_t slot){
+
+    int32_t retval=-1;
+
+    if(slot == 0){
+      proto_write_mem(new_image,SLOT_0, IMAGE_SIZE);
+      retval = 0;
+    }
+    else if(slot == 1){
+      proto_write_mem(new_image,SLOT_1, IMAGE_SIZE);
+      retval = 0;
+    }
+    else {
+      printf("\n invalid slot \n");
+    }
+}
 
 int main(void){
 
@@ -36,12 +62,44 @@ int main(void){
             printf("update_count:%0X\n",boot_conf.update_count);
             printf("bootloader_ver:%X\n",boot_conf.bootloader_ver);
             printf("protocol_ver:%X\n",boot_conf.protocol_ver);
+            printf("active_image:%X\n",boot_conf.active_image);
             printf("\n*** END of Boot_config information***\n");
           }break;
 
           case 2:{
-            printf("\n*** UPDATING...***\n");
-            printf("No updates require..\n");
+            //get the current config
+            proto_get_cfg(&boot_conf);
+            //check if image at slot_0 needs an update
+            if(new_fw_version == boot_conf.image[0].version){
+                //reset the target
+                proto_reset_traget();
+                //flash the image at slot 0
+                flash_new_image(0);
+                // make it active image
+                boot_conf.active_image = 0;
+                //save boot_conf
+                proto_set_cfg(&boot_conf);
+                // reset target
+                proto_reset_traget();
+                // delay more than 2 seconds 
+            }
+            else if (new_fw_version == boot_conf.image[1].version){
+                //reset the target
+                proto_reset_traget();
+                //flash the image at slot 0
+                flash_new_image(1);
+                // make it active image
+                boot_conf.active_image = 1;
+                //save boot_conf
+                proto_set_cfg(&boot_conf);
+                // reset target
+                proto_reset_traget();
+                // delay more than 2 seconds 
+
+            } 
+            else {
+                printf("No updates require..\n");
+            }
           }break;
 
           case 3:{

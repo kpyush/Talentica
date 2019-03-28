@@ -44,20 +44,35 @@ uint32_t proto_get_cfg(config_t *cfg){
     cfg->update_count = 0x02;
     cfg->bootloader_ver = BOOTLOADER_VER;
     cfg->protocol_ver = PRTOCOL_VER;
+    cfg->active_image = 1;
+    return 0;
 }
+
 uint32_t proto_set_cfg(config_t *cfg){
     LOG("%s\n",__FUNCTION__);
     transport_write(NULL,0x1234);
     transport_read(NULL,0x1234);
+    return 0;
 }
+
 uint32_t proto_erase_mem(uint32_t add, uint32_t len){
     LOG("%s\n",__FUNCTION__);
     transport_write(NULL,0x1234);
+    return 0;
 }
+
 uint32_t proto_read_mem(char *buff, uint32_t add, uint32_t len){
     LOG("%s\n",__FUNCTION__);
     transport_write(NULL,0x1234);
     transport_read(NULL,0x1234);
+    return 0;
+}
+
+uint32_t proto_write_mem(const char *buff, uint32_t add, uint32_t len){
+    LOG("%s\n",__FUNCTION__);
+    transport_write(NULL,0x1234);
+    transport_read(NULL,0x1234);
+    return 0;
 }
 void proto_go(uint32_t add){
     LOG("%s\n",__FUNCTION__);

@@ -32,6 +32,7 @@ typedef struct {
   uint32_t update_count;    /* image update counter */
   uint32_t bootloader_ver;  /* bootloader version of target*/
   uint32_t protocol_ver;    /* protocol version of host*/
+  uint32_t active_image;    /* active image*/
 }config_t;
 
 /**
@@ -89,6 +90,16 @@ uint32_t proto_erase_mem(uint32_t add, uint32_t len);
  * @retval  1  error.
  */
 uint32_t proto_read_mem(char *buff, uint32_t add, uint32_t len);
+
+/**
+ * @brief Writes memory from the given address .
+ * @param[in] add : address of the memory to be write.
+ * @param[in] len : lenght to be written 
+ *
+ * @retval  0  succuess.
+ * @retval  1  error.
+ */
+uint32_t proto_write_mem(const char *buff, uint32_t add, uint32_t len);
 
 /**
  * @brief loads the image from the specific address and executes
