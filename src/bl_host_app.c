@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
-#include<bl_host_conf.h>
 #include<proto.h>
+#include<bl_host_conf.h>
 
 static config_t boot_conf;
 static int32_t choice;
