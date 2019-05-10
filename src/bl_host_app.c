@@ -32,6 +32,7 @@ int32_t flash_new_image(int32_t slot){
     else {
       printf("\n invalid slot \n");
     }
+    return retval;
 }
 
 
